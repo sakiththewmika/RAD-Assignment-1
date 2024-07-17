@@ -10,6 +10,7 @@ import History from './pages/History';
 import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import { CssBaseline } from '@mui/material';
+import './index.css';
 
 const App = () => {
   return (
@@ -20,7 +21,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />}>
-            <Route index element={<Navigate to="history" replace />} />
             <Route path="history" element={<History />} />
             <Route path="services" element={<Service />} />
             <Route path="vehicles" element={<Vehicles />} />
