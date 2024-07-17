@@ -15,7 +15,7 @@ const schema = yup.object().shape({
   message: yup.string().required('Message is required'),
 });
 
-const MainPage = () => {
+const Contact = () => {
   const [submissionMessage, setSubmissionMessage] = useState('');
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -88,7 +88,7 @@ const MainPage = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={5} display={'flex'}>
-            <Img src="/contact.png" alt="contactimg" sx={{maxWidth : {xs : '300px', sm : '400px', md : '450px'}}} />
+            <Img src="contact.png" alt="contactimg" sx={{maxWidth : {xs : '300px', sm : '400px', md : '450px'}}} />
           </Grid>
         </Grid>
       </Section>
@@ -96,5 +96,5 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default Contact;
 

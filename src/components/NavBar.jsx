@@ -3,6 +3,7 @@ import { AppBar, Button, Grid, Box, Drawer, IconButton, List, ListItem, ListItem
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled } from '@mui/system';
 import { ThemeContext } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 
 // Custom styles using styled from @mui/system
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -13,7 +14,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     padding: '0 16px',
 }));
 
-const NavLinkStyled = styled('a')(({ theme }) => ({
+const NavLinkStyled = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
     color: theme.palette.common.white,
     margin: '0 15px',
@@ -22,15 +23,26 @@ const NavLinkStyled = styled('a')(({ theme }) => ({
     },
 }));
 
-const DrawerButton = styled(Button)(({ theme }) => ({
+const Menu = styled(Box)(({theme}) => ({
+    height: '100%',
+    backgroundColor: theme.palette.appBar.main,
+}));
+
+const MenuLink = styled(Link)(({ theme }) => ({
     width: '100%',
+    display: 'flex',
     justifyContent: 'center',
     padding: theme.spacing(1),
-    textTransform: 'inherit',
+    textDecoration: 'none',
     color: 'black',
-    backgroundColor: 'lightgray',
+    margin: '5px',
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    transition: 'background-color 0.3s, transform 0.3s',
     '&:hover': {
-        backgroundColor: 'light',
+        backgroundColor: theme.palette.secondary.main,
+        transform: 'scale(1.05)',
     },
 }));
 
@@ -52,35 +64,35 @@ const NavBar = () => {
     };
 
     const drawer = (
-        <Box
+        <Menu
             onClick={handleDrawerToggle}
             onKeyDown={handleDrawerToggle}
             role="presentation"
         >
             <List>
                 <ListItem>
-                    <DrawerButton component="a" href="#home">
+                    <MenuLink to={'/'}>
                         Home
-                    </DrawerButton>
+                    </MenuLink>
                 </ListItem>
                 <ListItem>
-                    <DrawerButton component="a" href="#about">
+                    <MenuLink to={'/about'}>
                         About
-                    </DrawerButton>
+                    </MenuLink>
                 </ListItem>
                 <ListItem>
-                    <DrawerButton component="a" href="#contact">
+                    <MenuLink to={'/contact'}>
                         Contact Us
-                    </DrawerButton>
+                    </MenuLink>
                 </ListItem>
                 <ListItem>
-                    <DrawerButton onClick={toggleTheme}>
+                    <MenuLink onClick={toggleTheme}>
                         {theme === 'light' ? 'Dark' : 'Light'} Mode
-                    </DrawerButton>
+                    </MenuLink>
                 </ListItem>
             </List>
 
-        </Box>
+        </Menu>
     );
 
     return (
@@ -104,9 +116,9 @@ const NavBar = () => {
                 </Grid>
                 <Grid item xs={12} md={8} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
                     <Box display="flex" justifyContent="flex-end" alignItems="center">
-                        <NavLinkStyled href="#home">Home</NavLinkStyled>
-                        <NavLinkStyled href="#about">About</NavLinkStyled>
-                        <NavLinkStyled href="#contact">Contact Us</NavLinkStyled>
+                        <NavLinkStyled to="/">Home</NavLinkStyled>
+                        <NavLinkStyled to="/about">About</NavLinkStyled>
+                        <NavLinkStyled to="/contact">Contact Us</NavLinkStyled>
                     </Box>
                     <Box display="flex" justifyContent="flex-end" alignItems="center" marginLeft="20px">
                         <Button onClick={toggleTheme}>
@@ -114,13 +126,6 @@ const NavBar = () => {
                         </Button>
                     </Box>
                 </Grid>
-                {/* <Grid item xs={6} md={2} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-                    <Box display="flex" justifyContent="flex-end" alignItems="center">
-                        <Button onClick={toggleTheme}>
-                            {theme === 'light' ? 'Dark' : 'Light'} Mode
-                        </Button>
-                    </Box>
-                </Grid> */}
             </Grid>
             <Drawer
                 anchor="right"

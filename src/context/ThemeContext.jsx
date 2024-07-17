@@ -12,7 +12,7 @@ export const lightTheme = createTheme({
       main: '#0088ffd1', // Custom primary color
     },
     secondary: {
-      main: '#f50057', // Custom secondary color
+      main: '#005b9f', // Custom secondary color
     },
     background: {
       default: '#ffffff', // Default background color
@@ -46,7 +46,7 @@ export const darkTheme = createTheme({
       main: '#0088ffd1', // Custom primary color
     },
     secondary: {
-      main: '#ff4081', // Custom secondary color
+      main: '#005b9f', // Custom secondary color
     },
     background: {
       default: '#070F2B', // Default background color
