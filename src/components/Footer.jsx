@@ -10,6 +10,7 @@ const Footer = () => {
         px: 2, 
         mt: 'auto', 
         textAlign: 'center',
+        position : 'sticky',
         backgroundColor: (theme) =>
           theme.palette.mode === 'light' ? theme.palette.grey[200] : '#02091d',
         }}

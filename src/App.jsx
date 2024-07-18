@@ -11,10 +11,12 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import { CssBaseline } from '@mui/material';
 import './index.css';
+import { Box} from '@mui/material';
 
 const App = () => {
   return (
     <ThemeProvider>
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
       <Router>
         <NavBar />
@@ -29,6 +31,7 @@ const App = () => {
         </Routes>
         <Footer />
       </Router>
+      </Box>
     </ThemeProvider>
   );
 };

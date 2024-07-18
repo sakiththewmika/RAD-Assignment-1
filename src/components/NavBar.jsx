@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { AppBar, Button, Grid, Box, Drawer, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { AppBar, Button, Grid, Box, Drawer, IconButton, List, ListItem, ListItemText, Typography, Switch } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { WbSunny, NightsStay } from '@mui/icons-material';
 import { styled } from '@mui/system';
 import { ThemeContext } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
@@ -23,7 +26,7 @@ const NavLinkStyled = styled(Link)(({ theme }) => ({
     },
 }));
 
-const Menu = styled(Box)(({theme}) => ({
+const Menu = styled(Box)(({ theme }) => ({
     height: '100%',
     backgroundColor: theme.palette.appBar.main,
 }));
@@ -63,6 +66,10 @@ const NavBar = () => {
         setDrawerOpen(!drawerOpen);
     };
 
+    const handleThemeToggle = (event) => {
+        toggleTheme();
+    };
+
     const drawer = (
         <Menu
             onClick={handleDrawerToggle}
@@ -86,12 +93,14 @@ const NavBar = () => {
                     </MenuLink>
                 </ListItem>
                 <ListItem>
-                    <MenuLink onClick={toggleTheme}>
-                        {theme === 'light' ? 'Dark' : 'Light'} Mode
-                    </MenuLink>
+                    <Box display="flex" alignItems="center">
+                        <Typography variant="body1">
+                            {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+                        </Typography>
+                        <Switch checked={theme === 'dark'} onChange={handleThemeToggle} />
+                    </Box>
                 </ListItem>
             </List>
-
         </Menu>
     );
 
@@ -105,6 +114,10 @@ const NavBar = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={6} md={9} sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end' }}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" marginLeft="20px">
+                        {theme === 'light' ? <WbSunny /> : <NightsStay />}
+                        <Switch checked={theme === 'dark'} onChange={handleThemeToggle} />
+                    </Box>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -121,9 +134,8 @@ const NavBar = () => {
                         <NavLinkStyled to="/contact">Contact Us</NavLinkStyled>
                     </Box>
                     <Box display="flex" justifyContent="flex-end" alignItems="center" marginLeft="20px">
-                        <Button onClick={toggleTheme}>
-                            {theme === 'light' ? 'Dark' : 'Light'} Mode
-                        </Button>
+                        {theme === 'light' ? <WbSunny /> : <NightsStay />}
+                        <Switch checked={theme === 'dark'} onChange={handleThemeToggle} />
                     </Box>
                 </Grid>
             </Grid>
@@ -139,6 +151,7 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
 
 
 

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Container, Typography, Button, TextField, Grid } from '@mui/material';
 import { styled } from '@mui/system';
 
 const Section = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(10, 0),
+  padding: theme.spacing(12, 0),
 }));
 
 const Img = styled('img')({
@@ -25,32 +23,74 @@ const schema = yup.object().shape({
 });
 
 const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState({});
   const [submissionMessage, setSubmissionMessage] = useState('');
-  const { register, handleSubmit, formState: { errors }, watch } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const formData = watch();
 
   useEffect(() => {
+    const formData = { name, email, message };
     localStorage.setItem('contactForm', JSON.stringify(formData));
-  }, [formData]);
+  }, [name, email, message]);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    setSubmissionMessage('Your message has been sent successfully!');
+  const validateField = (name, value) => {
+    try {
+      yup.reach(schema, name).validateSync(value);
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: null }));
+    } catch (error) {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: error.message }));
+    }
+  };
+
+  const handleChange = (field, value) => {
+    switch (field) {
+      case 'name':
+        setName(value);
+        validateField(field, value);
+        break;
+      case 'email':
+        setEmail(value);
+        validateField(field, value);
+        break;
+      case 'message':
+        setMessage(value);
+        validateField(field, value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = { name, email, message };
+    schema.validate(formData, { abortEarly: false })
+      .then(() => {
+        console.log(formData);
+        setSubmissionMessage('Your message has been sent successfully!');
+        setErrors({});
+      })
+      .catch((validationErrors) => {
+        const formattedErrors = {};
+        validationErrors.inner.forEach((error) => {
+          formattedErrors[error.path] = error.message;
+        });
+        setErrors(formattedErrors);
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit}>
       <Box mb={2}>
         <TextField
           label="Name"
           variant="outlined"
           fullWidth
-          {...register('name')}
+          value={name}
+          onChange={(e) => handleChange('name', e.target.value)}
           error={!!errors.name}
-          helperText={errors.name?.message}
+          helperText={errors.name}
         />
       </Box>
       <Box mb={2}>
@@ -58,9 +98,10 @@ const ContactForm = () => {
           label="Email"
           variant="outlined"
           fullWidth
-          {...register('email')}
+          value={email}
+          onChange={(e) => handleChange('email', e.target.value)}
           error={!!errors.email}
-          helperText={errors.email?.message}
+          helperText={errors.email}
         />
       </Box>
       <Box mb={2}>
@@ -70,13 +111,14 @@ const ContactForm = () => {
           fullWidth
           multiline
           rows={3}
-          {...register('message')}
+          value={message}
+          onChange={(e) => handleChange('message', e.target.value)}
           error={!!errors.message}
-          helperText={errors.message?.message}
+          helperText={errors.message}
         />
       </Box>
       <Button type="submit" variant="contained" color="primary">Send</Button>
-      {submissionMessage && <Typography variant="body1" color="success.main">{submissionMessage}</Typography>}
+      {submissionMessage && <Typography variant="body1" color="success.main" mt={4}>{submissionMessage}</Typography>}
     </form>
   );
 };
@@ -109,5 +151,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
-
